@@ -1,0 +1,450 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Sumit Sachin Patil Portfolio</title>
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+
+    html, body {
+      height: 100%;
+      background: #fefefe;
+      scroll-behavior: smooth;
+      overflow-x: hidden;
+    }
+
+    body {
+      display: flex;
+      min-height: 100vh;
+      position: relative;
+      z-index: 1;
+      color: #000;
+      font-weight: bold;
+    }
+
+    /* Background particles canvas */
+    #particles-js {
+      position: fixed;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      z-index: 0;
+      background: #fefefe;
+    }
+
+    /* Left navigation */
+    nav {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 80px;
+      height: 100vh;
+      background: #0b3d91;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      gap: 20px;
+      box-shadow: 2px 0 8px rgba(0,0,0,0.1);
+      z-index: 10;
+    }
+
+    nav a {
+      width: 48px;
+      height: 48px;
+      background: #154a9f;
+      border-radius: 8px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      text-decoration: none;
+      cursor: pointer;
+      transition: background 0.25s ease, transform 0.25s ease,
+                  box-shadow 0.25s ease;
+      position: relative;
+      color: #000;
+      font-size: 20px;
+      font-weight: bold;
+    }
+
+    nav a.active,
+    nav a:hover {
+      background: #f39c12;
+      transform: translateY(-2px);
+      box-shadow: 0 0 10px #f39c12;
+    }
+
+    nav a span {
+      position: absolute;
+      left: 100%;
+      padding: 3px 8px;
+      margin-left: 8px;
+      background: #f39c12;
+      color: #000;
+      border-radius: 4px;
+      white-space: nowrap;
+      opacity: 0;
+      transform: translateY(-50%);
+      top: 50%;
+      transition: opacity 0.2s ease;
+      pointer-events: none;
+      font-size: 12px;
+    }
+
+    nav a:hover span {
+      opacity: 1;
+    }
+
+    /* Main content area */
+    main {
+      margin-left: 80px;
+      padding: 40px 60px;
+      flex-grow: 1;
+      max-width: 960px;
+      position: relative;
+      z-index: 10;
+    }
+
+    section {
+      margin-bottom: 70px;
+    }
+
+    section h1,
+    section h2,
+    section h3 {
+      color: #000;
+      font-weight: bold;
+    }
+
+    section h1 {
+      font-size: 2.6rem;
+      margin-bottom: 10px;
+    }
+
+    section h2 {
+      font-size: 1.9rem;
+      margin-bottom: 18px;
+      border-bottom: 2px solid #000;
+      display: inline-block;
+      padding-bottom: 4px;
+    }
+
+    section h3 {
+      font-size: 1.3rem;
+      margin-bottom: 4px;
+    }
+
+    p {
+      font-size: 1rem;
+      line-height: 1.5;
+      margin-bottom: 6px;
+    }
+
+    a {
+      color: #000;
+      text-decoration: none;
+      font-weight: bold;
+    }
+
+    a:hover {
+      text-decoration: underline;
+    }
+
+    /* ABOUT section specific */
+    #about {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 30px;
+      align-items: center;
+    }
+
+    .about-text {
+      flex: 1 1 260px;
+      max-width: 560px;
+    }
+
+    .profile-pic {
+      width: 220px;
+      height: 220px;
+      border-radius: 18px;
+      overflow: hidden;
+      border: 3px solid #000;
+      box-shadow: 0 10px 25px rgba(0,0,0,0.35);
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    .profile-pic img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+
+    .profile-pic:hover {
+      transform: scale(1.04) translateY(-4px);
+      box-shadow: 0 16px 35px rgba(0,0,0,0.5);
+    }
+
+    /* SKILLS section */
+    .skills-list,
+    .contact-list {
+      list-style: none;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: 5px;
+    }
+
+    .skills-list li,
+    .contact-list li {
+      background: #f3f3f3;
+      border: 1px solid #000;
+      padding: 8px 14px;
+      border-radius: 18px;
+      font-size: 0.9rem;
+      transition: transform 0.2s ease, box-shadow 0.2s ease,
+                  background 0.2s ease;
+    }
+
+    .skills-list li:hover,
+    .contact-list li:hover {
+      transform: translateY(-2px);
+      background: #e2e2e2;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.25);
+    }
+
+    /* REUSABLE item block for education / internships / projects */
+    .details-item {
+      margin-bottom: 18px;
+      padding-bottom: 10px;
+      border-bottom: 1px solid #ccc;
+    }
+
+    .details-meta {
+      font-size: 0.9rem;
+      opacity: 0.9;
+      margin-bottom: 4px;
+    }
+
+    @media (max-width: 720px) {
+      nav {
+        width: 60px;
+      }
+      nav a {
+        width: 38px;
+        height: 38px;
+        font-size: 16px;
+      }
+      main {
+        margin-left: 60px;
+        padding: 24px 20px;
+      }
+      section h1 {
+        font-size: 2.2rem;
+      }
+      section h2 {
+        font-size: 1.5rem;
+      }
+      #about {
+        flex-direction: column-reverse;
+        align-items: flex-start;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div id="particles-js"></div>
+
+  <!-- NAVIGATION: separate section shortcuts -->
+  <nav>
+    <a href="#about" class="active" aria-label="About Section"><span>About</span>A</a>
+    <a href="#skills" aria-label="Skills Section"><span>Skills</span>S</a>
+    <a href="#education" aria-label="Education Section"><span>Education</span>E</a>
+    <a href="#internships" aria-label="Internships Section"><span>Internships</span>I</a>
+    <a href="#projects" aria-label="Projects Section"><span>Projects</span>P</a>
+    <a href="#contact" aria-label="Contact Section"><span>Contact</span>C</a>
+  </nav>
+
+  <main>
+    <!-- ABOUT SECTION -->
+    <section id="about">
+      <div class="about-text">
+        <h1>Sumit Sachin Patil</h1>
+        <p>B.E. - Computer Science &amp; Engineering</p>
+        <p>
+          Passionate Computer Science and Engineering student at
+          Dr. D.Y. Patil Institute of Engineering, Management &amp; Research, Akurdi.
+        </p>
+        <p>
+          Skilled in full stack web development using ReactJS, NodeJS, PHP, SQL and MongoDB,
+          with hands-on internship experience.
+        </p>
+        <p>
+          Email: <a href="mailto:sumitpatil0979@gmail.com">sumitpatil0979@gmail.com</a><br>
+          Phone: <a href="tel:+919096018069">+91-9096018069</a><br>
+          Location: Pune, Maharashtra, India
+        </p>
+      </div>
+      <div class="profile-pic">
+        <img src="Sumit.jpg" alt="Photo of Sumit Sachin Patil">
+      </div>
+    </section>
+
+    <!-- SKILLS SECTION -->
+    <section id="skills">
+      <h2>Key Skills</h2>
+      <ul class="skills-list">
+        <li>Python</li>
+        <li>JavaScript</li>
+        <li>HTML5 &amp; CSS3</li>
+        <li>PHP &amp; SQL</li>
+        <li>ReactJS</li>
+        <li>NodeJS</li>
+        <li>MongoDB</li>
+        <li>Git &amp; GitHub</li>
+        <li>Power BI</li>
+        <li>XAMPP &amp; PhpMyAdmin</li>
+      </ul>
+    </section>
+
+    <!-- EDUCATION SECTION -->
+    <section id="education">
+      <h2>Education</h2>
+
+      <div class="details-item">
+        <h3>Dr. D Y Patil Institute of Engineering, Management &amp; Research, Akurdi</h3>
+        <p class="details-meta">B.E. Computer Science &amp; Engineering &nbsp;|&nbsp; 2022 – 2026</p>
+        <p>CGPA: 7.98 / 10</p>
+      </div>
+
+      <div class="details-item">
+        <h3>Y.B Patil Polytechnic, Akurdi, Pune</h3>
+        <p class="details-meta">Diploma – Computer Engineering &nbsp;|&nbsp; 2023</p>
+        <p>Percentage: 80.46%</p>
+      </div>
+
+      <div class="details-item">
+        <h3>High Vision International School, Pune</h3>
+        <p class="details-meta">10th CBSE &nbsp;|&nbsp; 2020</p>
+        <p>Percentage: 68.60%</p>
+      </div>
+    </section>
+
+    <!-- INTERNSHIPS SECTION -->
+    <section id="internships">
+      <h2>Internships</h2>
+
+      <div class="details-item">
+        <h3>Full Stack Web Developer – Wisdom Sprouts</h3>
+        <p class="details-meta">Dec 2024 – Feb 2025</p>
+        <p>
+          Worked on full stack web applications using SQL, ReactJS, NodeJS, HTML, CSS, JavaScript, PHP and MongoDB.
+        </p>
+      </div>
+
+      <div class="details-item">
+        <h3>Full Stack Web Developer – MRND Lab Pvt. Ltd.</h3>
+        <p class="details-meta">Jul 2022 – Aug 2022</p>
+        <p>
+          Gained experience in front-end and back-end web development using HTML5, CSS, PHP, XAMPP, PhpMyAdmin and JavaScript.
+        </p>
+      </div>
+    </section>
+
+    <!-- PROJECTS SECTION -->
+    <section id="projects">
+      <h2>Projects</h2>
+
+      <div class="details-item">
+        <h3>NK Institute E‑Commerce Web Application</h3>
+        <p class="details-meta">Oct 2022 – Feb 2023 &nbsp;|&nbsp; Team Size: 2 &nbsp;|&nbsp; Mentor: Mr. Santosh Korde</p>
+        <p>
+          Built an e‑commerce platform for NK Institute to manage and sell online courses and institute materials,
+          providing secure browsing, registration and purchase features using PHP, XAMPP, PhpMyAdmin, HTML, CSS and MongoDB.
+        </p>
+      </div>
+    </section>
+
+    <!-- CONTACT SECTION -->
+    <section id="contact">
+      <h2>Contact</h2>
+      <ul class="contact-list">
+        <li><a href="mailto:sumitpatil0979@gmail.com">Email: sumitpatil0979@gmail.com</a></li>
+        <li><a href="tel:+919096018069">Phone: +91-9096018069</a></li>
+        <li><a href="https://wa.me/9096018069" target="_blank" rel="noopener noreferrer">WhatsApp: +91-9096018069</a></li>
+        <li><a href="http://www.linkedin.com/in/sumitpatil0979" target="_blank" rel="noopener noreferrer">LinkedIn: sumitpatil0979</a></li>
+        <li>Address: Ekdant Residency Flat 303, Plot 25, Mhaskarnis Colony‑2, Near Shayadri English School, Talegaon Dabhade, Pune, Maharashtra, India – 410506</li>
+      </ul>
+    </section>
+  </main>
+
+  <!-- Particles.js library -->
+  <script src="https://cdn.jsdelivr.net/npm/particles.js@2.0.0/particles.min.js"></script>
+  <script>
+    /* Simple particles background */
+    particlesJS('particles-js', {
+      particles: {
+        number: { value: 60, density: { enable: true, value_area: 900 } },
+        color: { value: "#f39c12" },
+        shape: { type: "circle", stroke: { width: 0, color: "#000000" } },
+        opacity: {
+          value: 0.5, random: true,
+          anim: { enable: true, speed: 1, opacity_min: 0.1, sync: false }
+        },
+        size: {
+          value: 5, random: true,
+          anim: { enable: true, speed: 3, size_min: 0.1, sync: false }
+        },
+        line_linked: {
+          enable: true, distance: 140,
+          color: "#f39c12", opacity: 0.4, width: 1
+        },
+        move: {
+          enable: true, speed: 2, direction: "none", random: true,
+          straight: false, out_mode: "out", bounce: false,
+          attract: { enable: true, rotateX: 801, rotateY: 1000 }
+        }
+      },
+      interactivity: {
+        detect_on: "canvas",
+        events: {
+          onhover: { enable: true, mode: "grab" },
+          onclick: { enable: true, mode: "push" },
+          resize: true
+        },
+        modes: {
+          grab: { distance: 150, line_linked: { opacity: 0.7 } },
+          push: { particles_nb: 4 }
+        }
+      },
+      retina_detect: true
+    });
+
+    /* Scroll‑based active nav link */
+    const sections = document.querySelectorAll('main section');
+    const navLinks = document.querySelectorAll('nav a');
+
+    function setActiveNav() {
+      let current = sections[0].id;
+      sections.forEach(sec => {
+        const rect = sec.getBoundingClientRect();
+        if (rect.top <= window.innerHeight / 2 && rect.bottom >= window.innerHeight / 2) {
+          current = sec.id;
+        }
+      });
+      navLinks.forEach(link => {
+        link.classList.toggle('active', link.getAttribute('href') === '#' + current);
+      });
+    }
+
+    window.addEventListener('scroll', setActiveNav);
+    setActiveNav();
+  </script>
+</body>
+</html>
